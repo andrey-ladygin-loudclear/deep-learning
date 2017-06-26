@@ -6,6 +6,9 @@
 # print s
 # print(s.decode('UTF-8'))
 # print(s.decode('UTF-8').encode('UTF-8'))
+
+#(1, 2, 3, 4, 5, 6) - TUPLE, kortezh
+
 import numpy as np
 import pandas as pd
 
