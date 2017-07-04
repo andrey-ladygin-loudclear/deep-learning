@@ -17,6 +17,8 @@ def c(arr):
 # plt.plot(x, y)
 # plt.show()
 
+# find near minimum, start find it from some point
+
 print(optimize.minimize(f, 2, method='BFGS'))
 print(optimize.minimize(f, 30, method='BFGS'))
 # result = optimize.minimize(f, 2)
