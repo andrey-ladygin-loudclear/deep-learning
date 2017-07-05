@@ -17,19 +17,25 @@ for iter = 1:num_iters
     %       of the cost function (computeCost) and gradient here.
     %
 
-j = computeCost(X, y, theta)
 #disp(j)
-fprintf('\n-------****----------\n')
-fprintf('\nCOUNT: %d of %d\n', iter, num_iters)
-disp(theta)
+#fprintf('\n-------****----------\n')
+#fprintf('\nCOUNT: %d of %d\n', iter, num_iters)
+#fprintf('\nSUM: %f\n', sum((X*theta - y)' * X))
+#fprintf('\nElement X\n')
+#disp(X(iter,1:2))
+
 #theta = theta - ((0.03 * j) .* X;
 #g = alpha * (1/m) * sum(X * theta - y) * X
 
 #theta = theta - alpha * (1/m) * sum(X * theta - y) * X;
 #theta = theta - alpha * (1/m) * sum(X * theta - y) * X(iter,1:2);
-theta = theta - (alpha * j * X(iter,1:2))';
-disp(theta)
-fprintf('\n-----------------\n')
+#theta = theta - (alpha * j * X(iter,1:2))';
+
+#theta = theta - alpha * (1/m) * sum((X*theta - y)) * X(iter,1:2)
+theta = theta - (alpha/m) * ((X*theta - y)' * X)';
+
+#disp(theta)
+#fprintf('\n-----------------\n')
 
 
 
@@ -37,7 +43,7 @@ fprintf('\n-----------------\n')
     % ============================================================
 
     % Save the cost J in every iteration    
-    J_history(iter) = j;
+    J_history(iter) = computeCost(X, y, theta);
 
 end
 
