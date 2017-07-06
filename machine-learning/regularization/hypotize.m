@@ -10,9 +10,10 @@ function H = hypotize(X, theta)
     t1 = theta(1);
     t2 = theta(2);
     t3 = theta(3);
-    #t4 = theta(4);
+    t4 = theta(4);
+    t5 = theta(5);
     
-    H(i) = x0*t1 + x1^(1/2)*t2 + x1^2*t3;
+    H(i) = x0*t1 + x1^(1/2)*t2 + x1^2*t3 + x1^3*t4 + x1^5*t5;
   endfor
   
 end  

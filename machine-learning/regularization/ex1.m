@@ -12,15 +12,15 @@ data = [
 
 data = [
   1 1;
-  2 1.2;
-  3 1.5;
-  4 2;
-  5 2.2;
-  6 2.4;
-  7 2.6
-  8 2.9
-  9 3
-  10 3.2
+  2 2.2;
+  3 3.5;
+  4 4;
+  5 4.2;
+  6 20.4;
+  7 21.6
+  8 23.9
+  9 38
+  10 42.2
 ];
 
 X = data(:, 1);
@@ -29,11 +29,11 @@ m = length(y);
 
 
 X = [ones(m, 1), data(:,1)]; % Add a column of ones to x
-theta = zeros(3, 1);
+theta = zeros(5, 1);
 X
 #J = computeCost(X, y, theta);
 iterations = 2000;
-alpha = 0.0003;
+alpha = 0.00000000003;
 
 [theta, J_history] = gradientDescent(X, y, theta, alpha, iterations);
 
