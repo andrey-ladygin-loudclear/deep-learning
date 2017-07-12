@@ -9,6 +9,7 @@ num_labels = size(Theta2, 1);
 
 % You need to return the following variables correctly 
 p = zeros(size(X, 1), 1);
+X = [ones(m, 1) X];
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Complete the following code to make predictions using
@@ -22,10 +23,25 @@ p = zeros(size(X, 1), 1);
 %
 
 
+#m # 5000
+#X = 5000 x 401
+
+alpha1 = X';
+
+z2 = Theta1 * alpha1; # 25x401 * 401x5000 = 25x5000
+alpha2 = sigmoid(z2);
+alpha2 = [ones(1, m); alpha2];#26x5000
+
+z3 = Theta2 * alpha2;# 10*26 * 26x5000 = 10x5000
+alpha3 = sigmoid(z3);
 
 
 
+#max(k')'
+#max(k, [], 2)
 
+
+[v p] = max(alpha3', [], 2);
 
 
 

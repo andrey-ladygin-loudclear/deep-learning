@@ -30,9 +30,26 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
+resTheta = X * all_theta';
+#sizeP = size(p)
+#sizeX = size(X)
+#sizeALLTHETA = size(all_theta)
+#sizeNUMLABELS = size(num_labels)
+#sizeResTheta = size(resTheta)
+#gg = resTheta(1:20, 1:10)
 
+for i = 1:m
 
+  data = sigmoid(resTheta(i,:));
+  [val index] = max(data, [], 2);
 
+  p(i) = index;
+
+end
+
+#max(k')'
+#max(k, [], 2)
+#[v p] = max(data, [], 2);
 
 
 

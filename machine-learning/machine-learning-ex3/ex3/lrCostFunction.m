@@ -35,13 +35,15 @@ grad = zeros(size(theta));
 %           temp(1) = 0;   % because we don't add anything for j = 0  
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
+n = length(theta);
+regularVector = zeros(n);
+regularVector(1:n+1:n*n) = 1;
+regularVector(1,1) = 0;
 
-
-
-
-
-
-
+data = X * theta;
+h = sigmoid(data);
+J = (1/m) * (-1*y'*log(h) - (1 - y)' * log(1 - h)) + (lambda / (2*m)) * sum((regularVector*theta) .^ 2);
+grad = (1/m) * X' * (h - y) + (lambda / m) * (regularVector*theta);
 
 
 
