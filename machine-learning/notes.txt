@@ -28,8 +28,12 @@ bfgs алгоритм - узнать про них
 метод сопряженных градиентов - узнать про них
 
 
+neural networks PYTHON
+https://www.youtube.com/watch?v=UJwK6jAStmg
 
 
+GAME
+https://habrahabr.ru/post/302394/
 
 
 hy =
