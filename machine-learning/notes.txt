@@ -10,6 +10,11 @@ Decision Boundary - граница решений
 https://www.coursera.org/learn/machine-learning/lecture/WuL1H/decision-boundary
 
 
+подстроить функцию логарифма под параметры
+построить отображение в памяти по нейронным сетям
+
+
+
 
 https://d3c33hcgiwev3.cloudfront.net/X3PAer51EeSVRiIAC2sM-Q_Screen-Shot-2015-02-27-at-3.32.38-AM.png?Expires=1499904000&Signature=UwqHI6snZHesCTVWDmlqZGSHREHS72GCsbSDl2OMeQcbFOPvsNvtdtsPuTAu4qVKJwoqF0onMCtsBMuUmgMjtiFx6-XvxvaeYDXG1bUceEwSRBVAdBDeCe6A5xn4tNHqZNEn6HfSn9JW4y8MoDsieN93oEn3SCNc0rwtVpfoi6Y_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A
 
