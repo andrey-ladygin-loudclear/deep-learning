@@ -82,27 +82,8 @@ SUM = 0;
 for i = 1:m
   for k = 1:K
     
-    %1x400
-    %(1x401) * (25x401)' = 1x25
-    %(1x26) * (10x26)' = 1x10
     
-    #data = X(1,:) * Theta1;
     
-    current_set = [1 X(i,:)];%1x401
-    
-    data = current_set * Theta1';#1x25
-    
-    res = y(i);
-    H = sigmoid(data);#1x25
-    S += sum(-1*res*log(H) - (1 - res) * log(1 - H));
-        
-    Tgrad1 = (current_set' * (H - res))';#25x401
-    
-    data2 = [ones(1, size(Tgrad1, 2)); Tgrad1];#26x401
-    H2 = sigmoid(data2);#26x401
-    #size((H - res))1x25
-   
-    Tgrad2 = (current_set * (H - res));#(1x401 * )
   end
 end
 
