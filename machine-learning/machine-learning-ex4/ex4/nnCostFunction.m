@@ -64,13 +64,12 @@ Theta2_grad = zeros(size(Theta2));
 
 n = size(X, 2);
 
-#n - 400
-#m - 5000
 
 K = 10;
 S = 0;
-SUM = 0;
 
+#n - 400
+#m - 5000
 #size(X) 5000x400
 #size(Theta1) 25x401
 #size(Theta2) 10x26
@@ -79,26 +78,59 @@ SUM = 0;
 #size(Theta1_grad);#25x401
 #size(Theta2_grad);#10x26
 
+Tgrad1 = 0;
+Tgrad2 = 0;
+
 for i = 1:m
+  a1 = [1 X(i,:)];#1x401
+  
+  yi = y(i);
+  yik = zeros(K, 1);
+  yik(yi) = 1;
+    
+
+  z2 = a1 * Theta1';#1x401*401x25 = 1x25
+  a2 = sigmoid(z2);#1x25
+    
+  Tgrad1 += a2' * data;# (1x25)' * 1x401 = 25x401
+    
+  a2 = [1 a2];#1x26
+    
+  z3 = a2 * Theta2';#1x26*(10x26)' = 1x10
+  a3 = sigmoid(z3);#1x10
+    
+  Tgrad2 += a3' * a2;# (1x10)' * 1x26 = 10x26
+    
   for k = 1:K
     
+    res = yik(k);#result
+    hx = a3(k);#activation of k
     
-    
+    S += -1 * res * log(hx) - (1 - res) * log(1 - hx);#1x1
+  
   end
+
+  delta
+
 end
 
-J = (1/m) * S;
+regularization = (lambda / (2*m)) * (getRegularizationFotTheta(Theta1) + getRegularizationFotTheta(Theta2))
+
+
+J = (1/m) * sum(S) + regularization;
 Theta1_grad = (1/m) * Tgrad1;
 Theta2_grad = (1/m) * Tgrad2;
-#size(S)
-#fprintf('STOOOOOOOP')
-#pause
 
 
-
-
-
-
+function [regularization] = getRegularizationFotTheta(theta)
+  n = length(theta);
+  regularVector = zeros(n);
+  regularVector(1:n+1:n*n) = 1;
+  regularVector(1,1) = 0;
+  jsum = sum((theta * regularVector) .^ 2);
+  ksum = sum(jsum);
+  regularization = ksum;
+end
 
 
 
