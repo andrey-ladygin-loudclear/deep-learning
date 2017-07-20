@@ -65,7 +65,7 @@ Theta2_grad = zeros(size(Theta2));
 n = size(X, 2);
 
 
-K = 10;
+K = size(Theta2, 1);
 S = 0;
 
 #n - 400
@@ -81,6 +81,14 @@ S = 0;
 Tgrad1 = 0;
 Tgrad2 = 0;
 
+
+
+#Backpropagation
+delta_sum1=0;
+delta_sum2=0;
+delta_sum3=0;
+#Backpropagation
+
 for i = 1:m
   a1 = [1 X(i,:)];#1x401
   
@@ -92,7 +100,7 @@ for i = 1:m
   z2 = a1 * Theta1';#1x401*401x25 = 1x25
   a2 = sigmoid(z2);#1x25
     
-  Tgrad1 += a2' * data;# (1x25)' * 1x401 = 25x401
+  Tgrad1 += a2' * a1;# (1x25)' * 1x401 = 25x401
     
   a2 = [1 a2];#1x26
     
@@ -101,6 +109,10 @@ for i = 1:m
     
   Tgrad2 += a3' * a2;# (1x10)' * 1x26 = 10x26
     
+  #Backpropagation
+  delta3 = zeros(K, 1);
+  #Backpropagation
+    
   for k = 1:K
     
     res = yik(k);#result
@@ -108,9 +120,32 @@ for i = 1:m
     
     S += -1 * res * log(hx) - (1 - res) * log(1 - hx);#1x1
   
+    #Backpropagation
+    delta3(k) = hx - res;
+    #Backpropagation
   end
 
-  delta
+  #Backpropagation
+  
+  #delta3 = a3 - yik; # vectorize implementation
+  a2_derivative = a2 .* (1 - a2);#1x26 this is equal to sigmoidGradient(z2) + bias
+  
+  #delta2 = (Theta2' * delta3) .* a2_derivative';# (10x26)' * 10x1 .* (26x1)' = 26x1
+ 
+  
+  delta2 = (Theta2' * delta3) .* a2_derivative';# (10x26)' * 10x1 .* (26x1)' = 26x1
+  
+  #Note that you should skip or remove delta2(0)
+  delta2 = delta2(2:end);#25x1
+  
+  delta_sum2 = delta_sum2 + delta3 * (a2); # 1x10 * 1x26
+  delta_sum1 = delta_sum1 + delta2 * (a1); # 26x1 * 1x401
+  #size(Theta1) 25x401
+  #size(Theta2) 10x26
+  #size(Theta1_grad);#25x401
+  #size(Theta2_grad);#10x26
+  
+  #Backpropagation
 
 end
 
@@ -118,13 +153,30 @@ regularization = (lambda / (2*m)) * (getRegularizationFotTheta(Theta1) + getRegu
 
 
 J = (1/m) * sum(S) + regularization;
-Theta1_grad = (1/m) * Tgrad1;
-Theta2_grad = (1/m) * Tgrad2;
 
+#feedforward
+#Theta1_grad = (1/m) * Tgrad1;
+#Theta2_grad = (1/m) * Tgrad2;
+#feedforward
+
+#Backpropagation
+Theta1_without_bias = Theta1;
+Theta2_without_bias = Theta2;
+
+#regularizatia should equal to zero for j=0 (j=1 for octave)
+Theta1_without_bias(:,1) = 0;
+Theta2_without_bias(:,1) = 0;
+
+Theta1_regularization = (lambda/m) * Theta1_without_bias;
+Theta2_regularization = (lambda/m) * Theta2_without_bias;
+
+Theta1_grad = (1/m) * delta_sum1 + Theta1_regularization;
+Theta2_grad = (1/m) * delta_sum2 + Theta2_regularization;
+#Backpropagation
 
 function [regularization] = getRegularizationFotTheta(theta)
-  n = length(theta);
-  regularVector = zeros(n);
+  n = size(theta, 2);
+  regularVector = zeros(n, n);
   regularVector(1:n+1:n*n) = 1;
   regularVector(1,1) = 0;
   jsum = sum((theta * regularVector) .^ 2);
