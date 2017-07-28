@@ -19,14 +19,29 @@ grad = zeros(size(theta));
 %               You should set J to the cost and grad to the gradient.
 %
 
+h = cost(X, theta);
+diff = (h - y) .^ 2;
+
+J = (1/(2*m)) * (sum(diff)) + getRegularization(theta, lambda, m);
+
+grad = (1/m) * X' * (h - y) + getGradRegularization(theta, lambda, m);
 
 
+function [res] = cost(x, theta)
+  res = x * theta;
+end  
 
+function [regularization] = getRegularization(theta, lambda, m)
+  regular_theta = theta;
+  regular_theta(1) = 0;
+  regularization = (lambda/(2*m)) * sum(regular_theta .^ 2);
+end  
 
-
-
-
-
+function [regularization] = getGradRegularization(theta, lambda, m)
+  regular_theta = theta;
+  regular_theta(1) = 0;
+  regularization = (lambda/m) * sum(regular_theta);
+end  
 
 
 
