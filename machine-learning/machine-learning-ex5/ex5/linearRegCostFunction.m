@@ -40,7 +40,7 @@ end
 function [regularization] = getGradRegularization(theta, lambda, m)
   regular_theta = theta;
   regular_theta(1) = 0;
-  regularization = (lambda/m) * sum(regular_theta);
+  regularization = (lambda/m) * regular_theta;
 end  
 
 
