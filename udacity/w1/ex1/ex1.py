@@ -4,6 +4,9 @@ from data_prep import features, targets, features_test, targets_test
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
+def sigmoid_deriv(z):
+    return sigmoid(z) * (1 - sigmoid(z))
+
 n_records, n_features = features.shape
 
 weights = np.random.normal(scale=1/n_features**.5, size=n_features)
