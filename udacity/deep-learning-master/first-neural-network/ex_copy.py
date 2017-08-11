@@ -147,37 +147,11 @@ def MSE(y, Y):
 import sys
 
 ### Set the hyperparameters here ###
-iterations = 500
+iterations = 400
 learning_rate = 0.3
-hidden_nodes = 2
-output_nodes = 1
+hidden_nodes = 4
+output_nodes = 2
 
-X = np.array([
-    [1],
-    [2],
-    [3],
-])
-y = np.array([10, 20, 30])
-
-N_i = X.shape[1]
-network = NeuralNetwork(N_i, hidden_nodes, output_nodes, learning_rate)
-
-for i in range(iterations):
-    network.train(X, y)
-
-
-test = np.array([
-    [100]
-])
-
-res = network.run(test)
-
-print 'res: '+str(res)
-
-print network.weights_input_to_hidden
-print network.weights_hidden_to_output
-
-'''
 N_i = train_features.shape[1]
 network = NeuralNetwork(N_i, hidden_nodes, output_nodes, learning_rate)
 
@@ -204,4 +178,3 @@ plt.plot(losses['train'], label='Training loss')
 plt.plot(losses['validation'], label='Validation loss')
 plt.legend()
 _ = plt.ylim()
-'''
