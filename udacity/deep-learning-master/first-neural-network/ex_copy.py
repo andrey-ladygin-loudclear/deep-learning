@@ -147,34 +147,43 @@ def MSE(y, Y):
 import sys
 
 ### Set the hyperparameters here ###
-iterations = 400
+iterations = 200
 learning_rate = 0.3
-hidden_nodes = 4
-output_nodes = 2
+hidden_nodes = 8
+output_nodes = 4
 
-N_i = train_features.shape[1]
-network = NeuralNetwork(N_i, hidden_nodes, output_nodes, learning_rate)
+#learning_rate = (const1) / (ii + const2)
 
-losses = {'train':[], 'validation':[]}
-for ii in range(iterations):
-    # Go through a random batch of 128 records from the training data set
-    batch = np.random.choice(train_features.index, size=128)
-    X, y = train_features.ix[batch].values, train_targets.ix[batch]['cnt']
+def checkPrams(iterations, learning_rate, hidden_nodes, output_nodes):
+    N_i = train_features.shape[1]
+    network = NeuralNetwork(N_i, hidden_nodes, output_nodes, learning_rate)
 
-    network.train(X, y)
+    losses = {'train':[], 'validation':[]}
+    for ii in range(iterations):
+        # Go through a random batch of 128 records from the training data set
+        batch = np.random.choice(train_features.index, size=128)
+        X, y = train_features.ix[batch].values, train_targets.ix[batch]['cnt']
 
-    # Printing out the training progress
-    train_loss = MSE(network.run(train_features).T, train_targets['cnt'].values)
-    val_loss = MSE(network.run(val_features).T, val_targets['cnt'].values)
-    sys.stdout.write("\rProgress: {:2.1f}".format(100 * ii/float(iterations)) \
-                     + "% ... Training loss: " + str(train_loss)[:5] \
-                     + " ... Validation loss: " + str(val_loss)[:5])
-    sys.stdout.flush()
+        network.train(X, y)
 
-    losses['train'].append(train_loss)
-    losses['validation'].append(val_loss)
+        # Printing out the training progress
+        train_loss = MSE(network.run(train_features).T, train_targets['cnt'].values)
+        val_loss = MSE(network.run(val_features).T, val_targets['cnt'].values)
+        #sys.stdout.write("\rProgress: {:2.1f}".format(100 * ii/float(iterations)) \
+        #                 + "% ... Training loss: " + str(train_loss)[:5] \
+        #                 + " ... Validation loss: " + str(val_loss)[:5])
+        #sys.stdout.flush()
 
-plt.plot(losses['train'], label='Training loss')
-plt.plot(losses['validation'], label='Validation loss')
-plt.legend()
-_ = plt.ylim()
+        losses['train'].append(train_loss)
+        losses['validation'].append(val_loss)
+    print "Min train", min(losses['train']), "Min validation", min(losses['validation']), iterations, learning_rate, hidden_nodes, output_nodes
+
+for iterations in [100, 200, 300]:
+    for hidden_nodes in [6, 8, 10, 12]:
+        for output_nodes in [4, 6, 8, 10]:
+            checkPrams(iterations, learning_rate, hidden_nodes, output_nodes)
+
+#plt.plot(losses['train'], label='Training loss')
+#plt.plot(losses['validation'], label='Validation loss')
+#plt.legend()
+#_ = plt.ylim()

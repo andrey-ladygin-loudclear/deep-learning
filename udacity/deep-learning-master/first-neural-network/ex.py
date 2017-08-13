@@ -115,6 +115,14 @@ class NeuralNetwork(object):
             delta_weights_h_o += error * hidden_output[:, None]
             delta_weights_i_h += hidden_error_term * X[:, None]
 
+            #hidden_inputs = np.dot(X, self.weights_input_to_hidden) #  (56) X (56,5) -> (1,5) shaped output
+            #hidden_outputs = self.activation_function(hidden_inputs) # signals from hidden layer ->(1,5)
+            #final_inputs =  np.dot(hidden_outputs, self.weights_hidden_to_output) # (1,5)X(5,10) -> (1,10) shape
+            #final_outputs = final_inputs # (1,10) shape
+            #error = y - final_outputs # (1,10)
+            #hidden_error = np.dot(error, self.weights_hidden_to_output.T) # (1,10)X(10,5) -> (1,5)
+            #The hidden_error gets the dimension right and it makes the computation run without breaking but error calculation #here is wrong, additionally you are calculating additional weights for output layers
+
 
         # TODO: Update the weights - Replace these values with your calculations.
         self.weights_hidden_to_output += self.lr * (delta_weights_h_o / n_records) # update hidden-to-output weights with gradient descent step
