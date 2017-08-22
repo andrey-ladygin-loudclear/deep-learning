@@ -151,7 +151,7 @@ def MSE(y, Y):
     return np.mean((y-Y)**2)
 
 
-
+import tensorflow as tf
 import sys
 
 ### Set the hyperparameters here ###
@@ -184,6 +184,14 @@ print 'res: '+str(res)
 
 print network.weights_input_to_hidden
 print network.weights_hidden_to_output
+
+
+word2index = {}
+for i,word in enumerate(vocab):
+    word2index[word] = i
+
+# display the map of words to indices
+word2index
 
 '''
 N_i = train_features.shape[1]
