@@ -6,6 +6,7 @@ from keras.layers import Dense, Flatten, Activation, Convolution2D, MaxPooling2D
 #from tensorflow.contrib.keras.python.keras.utils import np_utils
 from keras.utils import np_utils
 import tensorflow as tf
+from tensorflow.contrib.layers import flatten
 
 numpy.random.seed(42)
 
@@ -29,12 +30,50 @@ Y_test = np_utils.to_categorical(y_test, 10)
 tf.reset_default_graph()
 
 # Inputs
-x = neural_net_image_input((32, 32, 3))
-y = neural_net_label_input(10)
-keep_prob = neural_net_keep_prob_input()
+#x = neural_net_image_input((32, 32, 3))
+x = tf.placeholder(tf.float32,[None, 32, 32, 3], name='x')
+#y = neural_net_label_input(10)
+y = tf.placeholder(tf.float32, [None, 10], name='y')
+#keep_prob = neural_net_keep_prob_input()
+keep_prob = tf.placeholder(tf.float32, None, name='keep_prob')
+
 
 # Model
-logits = conv_net(x, keep_prob)
+#logits = conv_net(x, keep_prob)
+#layer = conv2d_maxpool(x, 16, (4,4), (1,1), (2,2), (2,2))
+
+bias = tf.Variable(tf.zeros(16))
+depth = x.get_shape().as_list()[-1]
+weight= tf.Variable(tf.truncated_normal([4, 4, depth, 16]))
+conv = tf.nn.conv2d(x, weight, [1, 1, 1, 1], 'SAME') + bias
+conv = tf.nn.relu(conv)
+layer = tf.nn.max_pool(conv, [1, 2, 2, 1], [1, 2, 2, 1], 'SAME')
+
+
+
+
+tf.nn.dropout(layer, keep_prob=keep_prob)
+layer = flatten(layer)
+
+#layer = fully_conn(layer,400)
+
+shape = layer.get_shape().as_list()
+weight = tf.Variable(tf.truncated_normal([shape[-1], 400]))
+bias = tf.Variable(tf.zeros(400))
+layer = tf.nn.relu(tf.add(tf.matmul(layer, weight), bias))
+
+layer = tf.nn.dropout(layer, keep_prob)
+
+
+
+#logits = output(layer,10)
+
+shape = layer.get_shape().as_list()
+weight = tf.Variable(tf.truncated_normal([shape[-1], 10], stddev=0.1))
+bias = tf.Variable(tf.zeros(10))
+logits = tf.add(tf.matmul(layer, weight), bias)
+
+
 
 # Name logits Tensor, so that is can be loaded from disk after training
 logits = tf.identity(logits, name='logits')
