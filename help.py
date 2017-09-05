@@ -33,3 +33,5 @@ http://www.km.ru/referats/CD29619400EC4469B0C72192B1049FB3
 
 p1 или p2 = p1 + p2
 '''
+
+#sudo pip install tensorflow==1.0
