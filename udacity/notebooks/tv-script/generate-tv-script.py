@@ -44,15 +44,9 @@ def create_lookup_tables(text):
     :param words: Input list of words
     :return: A tuple of dicts.  The first dict....
     """
-    word_counts = Counter(text)
-    sorted_vocab = sorted(word_counts, key=word_counts.get, reverse=True)
-    int_to_vocab = {ii: word for ii, word in enumerate(sorted_vocab)}
-    vocab_to_int = {word: ii for ii, word in int_to_vocab.items()}
-
-    #text = list(set(text))
-    #index = range(len(text))
-    #int_to_vocab = dict(zip(index, text))
-    #vocab_to_int = dict(zip(text, index))
+    vocab = set(text)
+    vocab_to_int = {c: i for i, c in enumerate(vocab)}
+    int_to_vocab = dict(enumerate(vocab))
 
     return vocab_to_int, int_to_vocab
 
@@ -190,11 +184,16 @@ def build_nn(cell, rnn_size, input_data, vocab_size, embed_dim):
     embed = get_embed(input_data, vocab_size, embed_dim)
     rnn, final_state = build_rnn(cell, embed)
 
-    #res = tf.placeholder(tf.int32, [2, 2, None, 256])
-    #final_state = tf.reshape(final_state, res)
-
-    logits = tf.contrib.layers.fully_connected(rnn, vocab_size)
+    logits = tf.contrib.layers.fully_connected(rnn, vocab_size,  activation_fn=None,
+                                               weights_initializer=tf.truncated_normal_initializer(0.0, 0.1),
+                                               biases_initializer=tf.zeros_initializer((vocab_size)))
     return logits, final_state
+
+
+"""
+DON'T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE
+"""
+tests.test_build_nn(build_nn)
 
 
 """
@@ -232,17 +231,17 @@ tests.test_get_batches(get_batches)
 
 
 # Number of Epochs
-num_epochs = 100
+num_epochs = 200
 # Batch Size
 batch_size = 128
 # RNN Size
 rnn_size = 512
 # Embedding Dimension Size
-embed_dim = 128
+embed_dim = 300
 # Sequence Length
-seq_length = 30
+seq_length = 12
 # Learning Rate
-learning_rate = 0.01
+learning_rate = 0.0001
 # Show stats for every n number of batches
 show_every_n_batches = 5
 
