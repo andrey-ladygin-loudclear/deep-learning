@@ -1,0 +1,4 @@
+!.gitignore
+*.csv
+*.bson
+*.7z
