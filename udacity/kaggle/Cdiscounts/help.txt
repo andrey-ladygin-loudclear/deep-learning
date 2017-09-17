@@ -1,3 +1,7 @@
 https://www.kaggle.com/c/cdiscount-image-classification-challenge/data
 
 https://www.kaggle.com/c/text-normalization-challenge-english-language#timeline
+
+
+mongorestore -d cdiscount -c categories_test D:\Python\deep-learning\udacity\kaggle\Cdiscounts\data\test.bson
+mongorestore -d cdiscount -c categories_train D:\Python\deep-learning\udacity\kaggle\Cdiscounts\data\train.bson

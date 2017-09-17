@@ -1,6 +1,7 @@
 import tensorflow as tf
 
 import neural_layers as nl
+import mongo
 
 def conv_net(x, keep_prob):
     """
@@ -81,9 +82,11 @@ class ConvolutionNetwork:
             # Training cycle
             for epoch in range(epochs):
                 # Loop over all batches
+                print("Epoch %s" % (epoch))
                 n_batches = 5
                 for batch_i in range(1, n_batches + 1):
-                    for batch_features, batch_labels in helper.load_preprocess_training_batch(batch_i, batch_size):
+                    print("Batch i %s" % (batch_i))
+                    for batch_features, batch_labels in mongo.load_preprocess_training_batch(batch_i, batch_size):
                         train_neural_network(sess, self.optimizer, keep_probability, batch_features, batch_labels)
                     print('Epoch {:>2}, CIFAR-10 Batch {}:  '.format(epoch + 1, batch_i), end='')
                     print_stats(sess, batch_features, batch_labels, self.cost, self.accuracy)
@@ -93,7 +96,7 @@ class ConvolutionNetwork:
             save_path = saver.save(sess, save_model_path)
 
 def train_neural_network(session, optimizer, keep_probability, feature_batch, label_batch):
-    session.run(optimizer, feed_dict={x: feature_batch, y: label_batch, keep_prob: keep_probability})
+    session.run(optimizer, feed_dict={'x': feature_batch, 'y': label_batch, 'keep_prob': keep_probability})
 
 
 def print_stats(session, feature_batch, label_batch, cost, accuracy):
