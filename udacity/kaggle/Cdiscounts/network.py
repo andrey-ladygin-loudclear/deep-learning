@@ -48,6 +48,13 @@ class ConvolutionNetwork:
     optimizer = None
     accuracy = None
 
+    x = None
+    y = None
+    keep_prob = None
+
+    #valid_features, valid_labels = pickle.load(open('preprocess_validation.p', mode='rb'))
+    valid_features, valid_labels = mongo.get_valid_features_and_labels()
+
     def build(self, w, h, num_of_categories):
         # Remove previous weights, bias, inputs, etc..
         tf.reset_default_graph()
@@ -87,19 +94,18 @@ class ConvolutionNetwork:
                 for batch_i in range(1, n_batches + 1):
                     print("Batch i %s" % (batch_i))
                     for batch_features, batch_labels in mongo.load_preprocess_training_batch(batch_i, batch_size):
-                        train_neural_network(sess, self.optimizer, keep_probability, batch_features, batch_labels)
+                        self.train_neural_network(sess, self.optimizer, keep_probability, batch_features, batch_labels)
                     print('Epoch {:>2}, CIFAR-10 Batch {}:  '.format(epoch + 1, batch_i), end='')
-                    print_stats(sess, batch_features, batch_labels, self.cost, self.accuracy)
+                    self.print_stats(sess, batch_features, batch_labels, self.cost, self.accuracy)
 
             # Save Model
             saver = tf.train.Saver()
             save_path = saver.save(sess, save_model_path)
 
-def train_neural_network(session, optimizer, keep_probability, feature_batch, label_batch):
-    session.run(optimizer, feed_dict={'x': feature_batch, 'y': label_batch, 'keep_prob': keep_probability})
+    def train_neural_network(self, session, optimizer, keep_probability, feature_batch, label_batch):
+        session.run(optimizer, feed_dict={self.x: feature_batch, self.y: label_batch, self.keep_prob: keep_probability})
 
-
-def print_stats(session, feature_batch, label_batch, cost, accuracy):
-    cost = session.run(cost, feed_dict={x: feature_batch, y: label_batch, keep_prob: 1.0})
-    validation_accuracy = session.run(accuracy, feed_dict={x: valid_features, y: valid_labels, keep_prob: 1.0})
-    print('Cost = {0} - Validation Accuracy = {1}'.format(cost, validation_accuracy))
+    def print_stats(self, session, feature_batch, label_batch, cost, accuracy):
+        cost = session.run(cost, feed_dict={self.x: feature_batch, self.y: label_batch, self.keep_prob: 1.0})
+        validation_accuracy = session.run(accuracy, feed_dict={self.x: self.valid_features, self.y: self.valid_labels, self.keep_prob: 1.0})
+        print('Cost = {0} - Validation Accuracy = {1}'.format(cost, validation_accuracy))

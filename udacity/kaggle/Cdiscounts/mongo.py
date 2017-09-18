@@ -1,7 +1,8 @@
 import io
+
 from PIL import Image
 from numpy.random.mtrand import rand
-from pymongo import MongoClient
+from pymongo import MongoClient, bson
 import pprint
 
 client = MongoClient('localhost', 27017)
@@ -56,6 +57,42 @@ def load_preprocess_training_batch(batch_i, batch_size):
     #
     # return batch_features, batch_labels
 
+
+#pip install pymongo
+def get_valid_features_and_labels():
+    data = bson.decode_file_iter(open('../input/train_example.bson', 'rb'))
+
+    valid_features = []
+    valid_labels = []
+
+    for c, d in enumerate(data):
+        product_id = d['_id']
+        category_id = d['category_id']
+
+        for e, pic in enumerate(d['imgs']):
+            valid_labels.append(category_id)
+            valid_features.append(get_image(pic['picture'], (w,h)))
+
+    return valid_features, valid_labels
+
+#pip install pymongo
+def get_valid_features_and_labels_TEST():
+    data = bson.decode_file_iter(open('../input/train_example.bson', 'rb'))
+    prod_to_category = dict()
+
+    for c, d in enumerate(data):
+        product_id = d['_id']
+        category_id = d['category_id'] # This won't be in Test data
+        prod_to_category[product_id] = category_id
+        for e, pic in enumerate(d['imgs']):
+            picture = imread(io.BytesIO(pic['picture']))
+            # do something with the picture, etc
+
+    prod_to_category = pd.DataFrame.from_dict(prod_to_category, orient='index')
+    prod_to_category.index.name = '_id'
+    prod_to_category.rename(columns={0: 'category_id'}, inplace=True)
+
+    return valid_features, valid_labels
 
 # first = collection.find_one()
 #
