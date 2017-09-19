@@ -43,24 +43,27 @@ def load_preprocess_training_batch():
 
 
         for e, pic in enumerate(row['imgs']):
+            append_to_bson('data/1000_test.bson', pic)
             count += 1
+            if count > 2000:
+                return
 
-            print("\r Iteration %s, count %s" % (iteration, count), end='')
-            im = Image.open(io.BytesIO(pic['picture']))
-            arr = np.array(list(im.getdata())) / 255
-            arr = np.reshape(arr, (180, 180, 3))
-            #arr = np.reshape(arr, -1)
-
-
-            image_data = {str(category_id): arr.tobytes()}
-            append_to_bson('data/preprocesed_images_with_categories.bson', image_data)
-
-            if count < 5000:
-                append_to_bson('data/5000_train.bson', image_data)
-            if count >= 5000 and count < 7000:
-                append_to_bson('data/2000_valid.bson', image_data)
-            if count >= 7000 and count < 9000:
-                append_to_bson('data/2000_test.bson', image_data)
+            # print("\r Iteration %s, count %s" % (iteration, count), end='')
+            # im = Image.open(io.BytesIO(pic['picture']))
+            # arr = np.array(list(im.getdata())) / 255
+            # arr = np.reshape(arr, (180, 180, 3))
+            # #arr = np.reshape(arr, -1)
+            #
+            #
+            # image_data = {str(category_id): arr.tobytes()}
+            # append_to_bson('data/preprocesed_images_with_categories.bson', image_data)
+            #
+            # if count < 5000:
+            #     append_to_bson('data/5000_train.bson', image_data)
+            # if count >= 5000 and count < 7000:
+            #     append_to_bson('data/2000_valid.bson', image_data)
+            # if count >= 7000 and count < 9000:
+            #     append_to_bson('data/2000_test.bson', image_data)
 
 
 
