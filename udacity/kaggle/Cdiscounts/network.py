@@ -2,6 +2,7 @@ import tensorflow as tf
 
 import neural_layers as nl
 import mongo
+import preprocess
 
 def conv_net(x, keep_prob):
     """
@@ -37,7 +38,9 @@ def conv_net(x, keep_prob):
     #    Set this to the number of classes
     # Function Definition from Above:
     #   output(x_tensor, num_outputs)
-    res = nl.output(layer,10)
+
+    categories = preprocess.load('data/categories.p')
+    res = nl.output(layer,len(categories))
 
 
     # TODO: return output
@@ -53,7 +56,7 @@ class ConvolutionNetwork:
     keep_prob = None
 
     #valid_features, valid_labels = pickle.load(open('preprocess_validation.p', mode='rb'))
-    valid_features, valid_labels = mongo.get_valid_features_and_labels(1000)
+    valid_features, valid_labels = preprocess.load_valid_data()
 
     def build(self, w, h, num_of_categories):
         # Remove previous weights, bias, inputs, etc..
@@ -93,8 +96,10 @@ class ConvolutionNetwork:
                 n_batches = 5
                 for batch_i in range(1, n_batches + 1):
                     print("Batch i %s" % (batch_i))
-                    for batch_features, batch_labels in mongo.load_preprocess_training_batch(batch_i, batch_size):
+
+                    for batch_features, batch_labels in preprocess.load_train_data(batch_i, batch_size):
                         self.train_neural_network(sess, self.optimizer, keep_probability, batch_features, batch_labels)
+
                     print('Epoch {:>2}, CIFAR-10 Batch {}:  '.format(epoch + 1, batch_i), end='')
                     self.print_stats(sess, batch_features, batch_labels, self.cost, self.accuracy)
 
@@ -103,6 +108,9 @@ class ConvolutionNetwork:
             save_path = saver.save(sess, save_model_path)
 
     def train_neural_network(self, session, optimizer, keep_probability, feature_batch, label_batch):
+        #print(self.x)
+        #print(self.x.shape)
+        #print(feature_batch)
         session.run(optimizer, feed_dict={self.x: feature_batch, self.y: label_batch, self.keep_prob: keep_probability})
 
     def print_stats(self, session, feature_batch, label_batch, cost, accuracy):

@@ -7,6 +7,7 @@ import io
 #b = bson.loads(bson_file.read())
 #print(len(b))
 import mongo
+import preprocess
 
 from network import ConvolutionNetwork
 
@@ -27,7 +28,9 @@ from network import ConvolutionNetwork
 
 
 w, h = 180, 180
-num_of_categories = 10
+
+categories = preprocess.load('data/categories.p')
+num_of_categories = len(categories)
 
 
 epochs = 100
