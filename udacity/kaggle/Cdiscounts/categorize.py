@@ -6,7 +6,7 @@ import io
 #bson_file = open('data/test.bson', 'rb')
 #b = bson.loads(bson_file.read())
 #print(len(b))
-from mongo import get_one
+import mongo
 
 from network import ConvolutionNetwork
 
@@ -26,7 +26,7 @@ from network import ConvolutionNetwork
 #
 
 
-w, h = 64, 64
+w, h = 180, 180
 num_of_categories = 10
 
 

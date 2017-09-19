@@ -53,29 +53,29 @@ class ConvolutionNetwork:
     keep_prob = None
 
     #valid_features, valid_labels = pickle.load(open('preprocess_validation.p', mode='rb'))
-    valid_features, valid_labels = mongo.get_valid_features_and_labels()
+    valid_features, valid_labels = mongo.get_valid_features_and_labels(1000)
 
     def build(self, w, h, num_of_categories):
         # Remove previous weights, bias, inputs, etc..
         tf.reset_default_graph()
 
         # Inputs
-        x = nl.neural_net_image_input((w, h, 3))
-        y = nl.neural_net_label_input(num_of_categories)
-        keep_prob = nl.neural_net_keep_prob_input()
+        self.x = nl.neural_net_image_input((w, h, 3))
+        self.y = nl.neural_net_label_input(num_of_categories)
+        self.keep_prob = nl.neural_net_keep_prob_input()
 
         # Model
-        logits = conv_net(x, keep_prob)
+        logits = conv_net(self.x, self.keep_prob)
 
         # Name logits Tensor, so that is can be loaded from disk after training
         logits = tf.identity(logits, name='logits')
 
         # Loss and Optimizer
-        self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=y))
+        self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=self.y))
         self.optimizer = tf.train.AdamOptimizer().minimize(self.cost)
 
         # Accuracy
-        correct_pred = tf.equal(tf.argmax(logits, 1), tf.argmax(y, 1))
+        correct_pred = tf.equal(tf.argmax(logits, 1), tf.argmax(self.y, 1))
         self.accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name='accuracy')
 
     def train(self, epochs, batch_size, keep_probability):
