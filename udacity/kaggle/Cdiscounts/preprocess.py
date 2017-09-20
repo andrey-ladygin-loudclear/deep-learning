@@ -136,6 +136,9 @@ def load_batch_Data(start=0, end=1000, batch_number=1, batch_size=128):
 
 def load_train_data(batch_i, batch_size):
     labels, features = load_batch_Data(0, 5000, batch_i, batch_size)
+    print(labels.shape)
+    print(labels.get_shape().as_list()[-1])
+    labels = np.reshape(labels, (256, 5270))
     return batch_features_labels(features, labels, batch_size)
 
 
@@ -145,6 +148,8 @@ def batch_features_labels(features, labels, batch_size):
     """
     for start in range(0, len(features), batch_size):
         end = min(start + batch_size, len(features))
+        print(start, end)
+        raise ValueError()
         yield features[start:end], labels[start:end][0]
 
 

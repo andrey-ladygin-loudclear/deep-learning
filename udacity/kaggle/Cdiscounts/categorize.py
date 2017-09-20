@@ -34,7 +34,7 @@ num_of_categories = len(categories)
 
 
 epochs = 100
-batch_size = 128
+batch_size = 256
 keep_probability = 0.5
 
 convNetwork = ConvolutionNetwork()
