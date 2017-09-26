@@ -19,7 +19,7 @@ def save(file, data):
 
 def normalize_categories():
     categories = {}
-    n = 1
+    n = 0
     data = bson.decode_file_iter(open('data/train.bson', 'rb'))
     for iteration, row in enumerate(data):
         print("\riteration %s" % (iteration), end="")
@@ -107,7 +107,7 @@ def load_batch_Data(start=0, end=1000, batch_number=1, batch_size=128):
 
         category_id = row['category_id']
         category_id = categories[category_id]
-        categorical = np_utils.to_categorical(category_id, len(categories))
+        categorical = np_utils.to_categorical(category_id, len(categories))[0]
 
         for e, pic in enumerate(row['imgs']):
 
@@ -136,9 +136,6 @@ def load_batch_Data(start=0, end=1000, batch_number=1, batch_size=128):
 
 def load_train_data(batch_i, batch_size):
     labels, features = load_batch_Data(0, 5000, batch_i, batch_size)
-    print(labels.shape)
-    print(labels.get_shape().as_list()[-1])
-    labels = np.reshape(labels, (256, 5270))
     return batch_features_labels(features, labels, batch_size)
 
 
@@ -148,10 +145,9 @@ def batch_features_labels(features, labels, batch_size):
     """
     for start in range(0, len(features), batch_size):
         end = min(start + batch_size, len(features))
-        print(start, end)
-        raise ValueError()
-        yield features[start:end], labels[start:end][0]
+        yield features[start:end], labels[start:end]
 
 
 def load_valid_data():
-    return load_batch_Data(5000, 8000, 1, 2000)
+    labels, features =  load_batch_Data(5000, 8000, 1, 500)
+    return features, labels

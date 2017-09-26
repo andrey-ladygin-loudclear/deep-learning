@@ -33,7 +33,7 @@ categories = preprocess.load('data/categories.p')
 num_of_categories = len(categories)
 
 
-epochs = 100
+epochs = 600
 batch_size = 256
 keep_probability = 0.5
 
