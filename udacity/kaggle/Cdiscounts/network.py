@@ -81,7 +81,7 @@ class ConvolutionNetwork:
         correct_pred = tf.equal(tf.argmax(logits, 1), tf.argmax(self.y, 1))
         self.accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name='accuracy')
 
-    def train(self, epochs, batch_size, keep_probability):
+    def train(self, epochs, batch_size, n_batches, keep_probability):
         save_model_path = './image_classification'
 
         print('Training...')
@@ -93,14 +93,14 @@ class ConvolutionNetwork:
             for epoch in range(epochs):
                 # Loop over all batches
                 print("Epoch %s" % (epoch))
-                n_batches = 780
+                #n_batches = 780
                 for batch_i in range(1, n_batches + 1):
                     print("Batch is %s" % (batch_i))
 
                     for batch_features, batch_labels in preprocess.load_train_data(batch_i, batch_size):
                         self.train_neural_network(sess, self.optimizer, keep_probability, batch_features, batch_labels)
 
-                    if batch_i % 20 == 0:
+                    if batch_i % 10 == 0:
                         print('Epoch {:>2}, CIFAR-10 Batch {}:  '.format(epoch + 1, batch_i), end='')
                         self.print_stats(sess, batch_features, batch_labels, self.cost, self.accuracy)
 

@@ -8,6 +8,10 @@ import numpy as np
 from PIL import Image
 from tensorflow.contrib.keras.python.keras.utils import np_utils
 
+im_w = im_h = 180
+
+def set_images_sdimensions(w, h):
+    im_w, im_h = w, h
 
 def load(file):
     with open(file, mode='rb') as file:
@@ -117,11 +121,10 @@ def load_batch_Data(start=0, end=1000, batch_number=1, batch_size=128):
                 return labels, features
 
             if count >= start_from:
-                sx, sy = 90, 90
                 im = Image.open(io.BytesIO(pic['picture']))
-                im.thumbnail((sx, sy), Image.ANTIALIAS)
+                im.thumbnail((im_w, im_h), Image.ANTIALIAS)
                 arr = np.array(list(im.getdata())) / 255
-                arr = np.reshape(arr, (sx, sy, 3))
+                arr = np.reshape(arr, (im_w, im_h, 3))
 
                 labels.append(categorical)
                 features.append(arr)
