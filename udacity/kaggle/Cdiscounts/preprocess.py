@@ -53,7 +53,7 @@ def load_preprocess_training_batch():
             # print("\r Iteration %s, count %s" % (iteration, count), end='')
             # im = Image.open(io.BytesIO(pic['picture']))
             # arr = np.array(list(im.getdata())) / 255
-            # arr = np.reshape(arr, (180, 180, 3))
+            # arr = np.reshape(arr, (90, 90, 3))
             # #arr = np.reshape(arr, -1)
             #
             #
@@ -117,9 +117,11 @@ def load_batch_Data(start=0, end=1000, batch_number=1, batch_size=128):
                 return labels, features
 
             if count >= start_from:
+                sx, sy = 90, 90
                 im = Image.open(io.BytesIO(pic['picture']))
+                im.thumbnail((sx, sy), Image.ANTIALIAS)
                 arr = np.array(list(im.getdata())) / 255
-                arr = np.reshape(arr, (180, 180, 3))
+                arr = np.reshape(arr, (sx, sy, 3))
 
                 labels.append(categorical)
                 features.append(arr)
@@ -135,7 +137,7 @@ def load_batch_Data(start=0, end=1000, batch_number=1, batch_size=128):
 #def load_train_data(batch_i, batch_size):
 
 def load_train_data(batch_i, batch_size):
-    labels, features = load_batch_Data(0, 5000, batch_i, batch_size)
+    labels, features = load_batch_Data(0, 100000, batch_i, batch_size)
     return batch_features_labels(features, labels, batch_size)
 
 
@@ -149,5 +151,5 @@ def batch_features_labels(features, labels, batch_size):
 
 
 def load_valid_data():
-    labels, features =  load_batch_Data(5000, 8000, 1, 500)
+    labels, features = load_batch_Data(100000, 130000, 1, 500)
     return features, labels

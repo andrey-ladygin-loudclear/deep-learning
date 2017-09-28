@@ -93,37 +93,25 @@ class ConvolutionNetwork:
             for epoch in range(epochs):
                 # Loop over all batches
                 print("Epoch %s" % (epoch))
-                n_batches = 5
+                n_batches = 780
                 for batch_i in range(1, n_batches + 1):
                     print("Batch is %s" % (batch_i))
 
                     for batch_features, batch_labels in preprocess.load_train_data(batch_i, batch_size):
                         self.train_neural_network(sess, self.optimizer, keep_probability, batch_features, batch_labels)
 
-                    print('Epoch {:>2}, CIFAR-10 Batch {}:  '.format(epoch + 1, batch_i), end='')
-                    self.print_stats(sess, batch_features, batch_labels, self.cost, self.accuracy)
+                    if batch_i % 20 == 0:
+                        print('Epoch {:>2}, CIFAR-10 Batch {}:  '.format(epoch + 1, batch_i), end='')
+                        self.print_stats(sess, batch_features, batch_labels, self.cost, self.accuracy)
 
             # Save Model
             saver = tf.train.Saver()
             save_path = saver.save(sess, save_model_path)
 
     def train_neural_network(self, session, optimizer, keep_probability, feature_batch, label_batch):
-        # print(self.y.shape)
-        # print(label_batch.shape)
-        # raise ValueError
         session.run(optimizer, feed_dict={self.x: feature_batch, self.y: label_batch, self.keep_prob: keep_probability})
 
     def print_stats(self, session, feature_batch, label_batch, cost, accuracy):
-        # print('self.x.shape', self.x.shape)
-        # print('feature_batch.shape', feature_batch.shape)
-        # print('self.y.shape', self.y.shape)
-        # print('label_batch.shape', label_batch.shape)
-        # print('self.valid_features.shape', self.valid_features.shape)
-        # print('self.valid_labels.shape', self.valid_labels.shape)
         cost = session.run(cost, feed_dict={self.x: feature_batch, self.y: label_batch, self.keep_prob: 1.0})
-        #print('cost: ', cost)
-        #print('self.valid_features: ', self.valid_features.shape)
-        #print('self.valid_labels: ', self.valid_labels.shape)
-        #raise ValueError
         validation_accuracy = session.run(accuracy, feed_dict={self.x: self.valid_features, self.y: self.valid_labels, self.keep_prob: 1.0})
         print('Cost = {0} - Validation Accuracy = {1}'.format(cost, validation_accuracy))

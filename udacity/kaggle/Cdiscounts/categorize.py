@@ -6,7 +6,7 @@ import io
 #bson_file = open('data/test.bson', 'rb')
 #b = bson.loads(bson_file.read())
 #print(len(b))
-import mongo
+#import mongo
 import preprocess
 
 from network import ConvolutionNetwork
@@ -27,14 +27,14 @@ from network import ConvolutionNetwork
 #
 
 
-w, h = 180, 180
+w, h = 90, 90
 
 categories = preprocess.load('data/categories.p')
 num_of_categories = len(categories)
 
 
-epochs = 600
-batch_size = 256
+epochs = 2000
+batch_size = 128
 keep_probability = 0.5
 
 convNetwork = ConvolutionNetwork()
