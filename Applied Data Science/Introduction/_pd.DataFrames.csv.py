@@ -17,3 +17,22 @@ for col in df.columns:
         df.rename(columns={col:'#' + col[1:]}, inplace=True)
 
 df.head()
+
+
+
+df['country'] = df.index
+df = df.set_index('Gold')
+
+
+df['SOMEVAL'].unique()
+
+df = df[df['SOMEVAL'] == 50]
+
+df.loc[ [('Colum 1', 'Colum 2'), ('Colum 1', 'Colum 3')] ]
+
+
+
+########### INDEX ##########
+df = df.set_index(['time', 'user'])
+df = df.sort_index()
+df
