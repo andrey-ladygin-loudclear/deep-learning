@@ -32,7 +32,7 @@ w = tf.Variable(0.0, name='weights')
 b = tf.Variable(0.0, name='bias')
 
 # Step 4: build model to predict Y
-Y_predicted = X * w + b 
+Y_predicted = X * w + b
 
 # Step 5: use the square error as the loss function
 loss = tf.square(Y - Y_predicted, name='loss')
