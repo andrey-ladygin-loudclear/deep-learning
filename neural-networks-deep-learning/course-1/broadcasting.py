@@ -8,3 +8,8 @@ total = A.sum(axis=0)
 print(total)
 percentage = 100*A/total.reshape(1,5)
 print(percentage)
+
+
+a = np.random.randn(5,1)
+
+assert(a.shape == (5,1))
