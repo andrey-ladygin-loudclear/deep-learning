@@ -117,7 +117,7 @@ class NN():
             else:
                 #g = (1 - np.power(A, 2))
                 if not layer.activation_derivative_function:
-                    raise Exception('Layer ' + str(layer) + ' - has not derivative of activation function')
+                    raise Exception('Layer <' + str(layer) + '> - has not derivative of activation function')
 
                 g = layer.activation_derivative_function(A)
                 dZ = np.multiply(np.dot(W.T, dZ),  g)
