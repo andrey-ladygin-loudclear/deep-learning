@@ -123,7 +123,7 @@ class NN():
                 dZ = np.multiply(np.dot(W.T, dZ),  g)
 
             dW = (1/m) * np.dot(dZ, A_from_next_layer.T)
-            db = (1/m) * np.sum(dZ, axis=1,keepdims=True)
+            db = (1/m) * np.sum(dZ, axis=1, keepdims=True)
             W = layer.W
             layer.set_derivatives(dW,db)
 
@@ -156,7 +156,7 @@ class NN():
 
             # Print the cost every 1000 iterations
             if print_cost and i % 1000 == 0:
-                print ("Cost after iteration %i: %f" %(i, cost))
+                print ("Cost for LOGISTIC REGRESSION after iteration %i: %f" %(i, cost))
 
         return cost
 
