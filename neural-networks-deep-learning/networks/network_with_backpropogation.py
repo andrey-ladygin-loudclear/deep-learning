@@ -61,7 +61,7 @@ class NN():
     def set_X(self, X):
         self.X = X
 
-    def forward_propagation(self, X):
+    def forward_propagation(self, X, keepprob = 1):
 
         # print('forward_propagation')
 
@@ -70,6 +70,10 @@ class NN():
         for layer in self.layers:
             W = layer.W
             b = layer.b
+
+            d3 = np.random.rand(2, 3) < keepprob
+            #A = np.multiply(A, d3)
+            #A /= keepprob
 
             Z = np.dot(W, A) + b
 
@@ -98,6 +102,9 @@ class NN():
 
         for i in range(L_len):
             layer = self.layers[-i-1]
+
+            # shoulb be updated
+            #https://www.coursera.org/learn/deep-neural-network/lecture/C9iQO/vanishing-exploding-gradients
             A = layer.get_activated_layer()
 
             # if L_len-i != L_len:
@@ -119,6 +126,8 @@ class NN():
                 if not layer.activation_derivative_function:
                     raise Exception('Layer <' + str(layer) + '> - has not derivative of activation function')
 
+                # seems for g(z)=z derivative should be not activated layer
+                # if z=w*x => a=g(z)=z then derivative should be w (z'=w => g(w))
                 g = layer.activation_derivative_function(A)
                 dZ = np.multiply(np.dot(W.T, dZ),  g)
 
