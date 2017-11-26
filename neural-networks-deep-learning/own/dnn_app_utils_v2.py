@@ -85,6 +85,7 @@ def sigmoid_backward(dA, cache):
 
 
 def load_data():
+
     train_dataset = h5py.File('../datasets/train_catvnoncat.h5', "r")
     train_set_x_orig = np.array(train_dataset["train_set_x"][:]) # your train set features
     train_set_y_orig = np.array(train_dataset["train_set_y"][:]) # your train set labels
