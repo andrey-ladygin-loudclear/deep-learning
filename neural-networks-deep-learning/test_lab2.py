@@ -44,12 +44,20 @@ def load_2D_dataset():
 
 train_X, train_Y, test_X, test_Y = load_2D_dataset()
 
-# layers_dims = [X.shape[0], 20, 3, 1]
+# layers_dims = [train_X.shape[0], 20, 3, 1]
+# L = len(layers_dims)
+# for l in range(1, L):
+#     print(layers_dims[l], layers_dims[l-1])
+
 
 Network = nn.NN()
 Network.set_X(train_X)
 Network.set_Y(train_Y)
 
+print('train_X shape', train_X.shape)
+print('train_Y shape', train_Y.shape)
+
+np.random.seed(3)
 L1 = nn.Layer(train_X.shape[0], 20, act=nf.relu, act_derivative=nf.relu_deriviate)
 L2 = nn.Layer(20, 3, act=nf.relu, act_derivative=nf.relu_deriviate)
 L3 = nn.Layer(3, train_Y.shape[0], act=nf.sigmoid, is_last_layer=True)
@@ -58,14 +66,15 @@ Network.add_layer(L1)
 Network.add_layer(L2)
 Network.add_layer(L3)
 
-Network.nn_model(num_iterations=30000, print_cost=True, learning_rate=0.7)
+Network.nn_model(num_iterations=30000, print_cost=True, learning_rate=.3, keepprob=0.86)
 
 # parameters = model(train_X, train_Y)
 # print ("On the training set:")
 # predictions_train = predict(train_X, train_Y, parameters)
 # print ("On the test set:")
 # predictions_test = predict(test_X, test_Y, parameters)
-predictions = Network.predict(train_X, train_Y)
-print(predictions)
-predictions = Network.predict(test_X, test_Y)
-print(predictions)
+predictions = Network.predict(train_X)
+print("Test Accuracy: "  + str(np.mean((predictions[0,:] == train_Y[0,:]))))
+
+predictions = Network.predict(test_X)
+print("Train Accuracy: "  + str(np.mean((predictions[0,:] == test_Y[0,:]))))

@@ -29,7 +29,8 @@ def relu(X):
     Return:
     s -- relu(x)
     """
-    return np.max(X, 0)
+    return np.maximum(0,X)
 
 def relu_deriviate(X):
-    return X < 0
+    return np.int64(X > 0)
+    # return X < 0
