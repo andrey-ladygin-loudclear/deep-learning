@@ -1,4 +1,4 @@
-import nn
+from neur import nn
 import numpy as np
 
 Network = nn.NN()
