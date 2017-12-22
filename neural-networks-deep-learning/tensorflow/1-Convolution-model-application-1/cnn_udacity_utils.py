@@ -101,6 +101,27 @@ def display_stats(cifar10_dataset_folder_path, batch_id, sample_id):
     plt.show()
 
 
+def batch_features_labels(features, labels, batch_size):
+    """
+    Split features and labels into batches
+    """
+    for start in range(0, len(features), batch_size):
+        end = min(start + batch_size, len(features))
+        yield features[start:end], labels[start:end]
+
+
+
+def load_preprocess_training_batch(batch_id, batch_size):
+    """
+    Load the Preprocessed Training data and return them in batches of <batch_size> or less
+    """
+    filename = 'cifar-10-batches-py/preprocess_batch_' + str(batch_id) + '.p'
+    features, labels = pickle.load(open(filename, mode='rb'))
+
+    # Return the training data in batches of size <batch_size> or less
+    return batch_features_labels(features, labels, batch_size)
+
+
 def _load_label_names():
     """
     Load the label names from file
