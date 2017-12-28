@@ -1,0 +1,2 @@
+./yad2k.py yolo.cfg yolo.weights model_data/yolo.h5
+./test_yolo.py model_data/yolo.h5
