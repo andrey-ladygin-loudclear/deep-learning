@@ -1,2 +1,5 @@
 !.gitignore
 .idea
+*.h5
+*.weights
+*.gz
