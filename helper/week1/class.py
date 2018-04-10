@@ -17,7 +17,6 @@ class planer:
         return self._peoples / 1.2
 
 
-
     peoples = property()
 
     @peoples.setter

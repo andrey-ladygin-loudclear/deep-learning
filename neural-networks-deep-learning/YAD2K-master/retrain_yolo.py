@@ -209,7 +209,7 @@ def create_model(anchors, class_names, load_pretrained=True, freeze_body=True):
     model_body = Model(image_input, final_layer)
 
     # Place model loss on CPU to reduce GPU memory usage.
-    with tf.device('/cpu:0'):
+        with tf.device('/cpu:0'):
         # TODO: Replace Lambda with custom Keras layer for loss.
         model_loss = Lambda(
             yolo_loss,
