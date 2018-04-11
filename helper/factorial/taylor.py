@@ -29,3 +29,4 @@ if __name__ == '__main__':
     #python -m cProfile -o prof.out taylor.py
     #pyprof2calltree -i prof.out -o prof.calltree
     #kcachegrind prof.calltree # or qcachegrind prof.calltree
+    #you can use instructions at https://github.com/rkern/line_profiler. kernprof.py -l -v simul.py

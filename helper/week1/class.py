@@ -42,3 +42,14 @@ print(pl.__dict__)
 
 print(dict.fromkeys('123456'))
 print(planer.__mro__)
+
+
+
+class GetAttr(object):
+    def __getattribute__(self, name):
+        f = lambda: "Hello {}".format(name)
+        return f
+
+g = GetAttr()
+g.Mark()
+'Hello Mark'

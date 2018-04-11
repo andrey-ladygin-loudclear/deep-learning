@@ -40,13 +40,33 @@ def benchmark():
 
     simulator = ParticleSimulator(particles)
     simulator.evolve(0.1)
+    # to run
+    # %load_ext line_profiler
+    # from simul import benchmark, ParticlesSimulator
+    # %lprun -f ParticlesSimulator.evolve benchmark()
+    # kernprof -l -v simul.py
 
+
+def benchmark_memory():
+    particles = [Particle(uniform(-1.0, 1.0),
+                          uniform(-1.0, 1.0),
+                          uniform(-1.0, 1.0))
+                 for i in range(100000)]
+    simulator = ParticleSimulator(particles)
+    simulator.evolve(0.001)
+    # 1 MiB (mebibyte) is equivalent to 1,048,576 bytes. It is different from 1 MB
+    # (megabyte), which is equivalent to 1,000,000 bytes.
+    # to run
+    # %load_ext memory_profiler
+    # from simul import benchmark_memory
+    # mprun -f benckmark_memory benchmark_memory()
+    # mprof run
 
 
 if __name__ == '__main__':
     benchmark()
-    #%timeit benchmark()
-    #result = timeit.timeit('benchmark()', setup='from __main__ import benchmark', number=10)
-    #python -m cProfile simul.py
-    #python -m cProfile -s tottime simul.py
-    #python -m cProfile -o prof.out simul.py
+    # %timeit benchmark()
+    # result = timeit.timeit('benchmark()', setup='from __main__ import benchmark', number=10)
+    # python -m cProfile simul.py
+    # python -m cProfile -s tottime simul.py
+    # python -m cProfile -o prof.out simul.py

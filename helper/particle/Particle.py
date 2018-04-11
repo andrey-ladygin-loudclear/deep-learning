@@ -1,4 +1,6 @@
 class Particle:
+    # __slots__ = ('x', 'y', 'ang_vel')
+
     def __init__(self, x, y, ang_vel):
         self.x = x
         self.y = y
