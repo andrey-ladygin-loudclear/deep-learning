@@ -35,6 +35,11 @@ for i, doc in enumerate(docs):
 index['cat'].intersection(index['table'])
 
 
+frozenset() # unchangable
+
+#В состав множеств могут включаться только хешируемые объекты. Хе
+#шируемые объекты – это объекты, имеющие специальный метод
+__hash__()
 
 { x for x in range(10)} # Генератор множеств
 set([1, 3, 3, 2]) == {1, 2, 3}
