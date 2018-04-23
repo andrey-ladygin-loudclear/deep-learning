@@ -63,3 +63,65 @@ g.Mark()
 # нение с типом Point, и если в этом типе не будет обнаружен такой ме
 # тод или он также возвращает NotImplemented, интерпретатор возбудит
 # исключение TypeError.
+
+
+class Ord:
+    def __getattr__(self, char):
+        return ord(char)
+
+# ord.a вернет число 97,
+# ord.Z вернет 90,
+# ord.е вернет 229
+
+class Const:
+    def __setattr__(self, name, value):
+        if name in self.__dict__:
+            raise ValueError("cannot change a const attribute")
+        self.__dict__[name] = value
+
+    def __delattr__(self, name):
+        if name in self.__dict__:
+            raise ValueError("cannot delete a const attribute")
+        raise AttributeError("'{0}' object has no attribute '{1}'"
+                         .format(self.__class__.__name__, name))
+
+
+
+# __delattr__(self, name) del x.n Удаляет атрибут n из объекта x
+# __dir__(self) dir(x) Возвращает список имен атрибутов объекта x
+# __getattr__(self, name) v = x.n Возвращает значение атрибута n объекта x, если он существует
+# __getattribute__(self, name) v = x.n Возвращает значение атрибута n объекта x; подробности в тексте
+# __setattr__(self, name, value) x.n = v Присваивает значение v атрибуту n объекта x
+
+
+
+
+
+class Image:
+
+    def __init__(self, width, height, filename="", background="#FFFFFF"):
+        self.filename = filename
+        self.__background = background
+        self.__data = {}
+        self.__width = width
+        self.__height = height
+        self.__colors = {self.__background}
+
+    def __getattr__(self, name):
+        if name == "colors":
+            return set(self.__colors)
+        classname = self.__class__.__name__
+        if name in frozenset({"background", "width", "height"}):
+            return self.__dict__["_{classname}__{name}".format(
+                **locals())]
+        raise AttributeError("'{classname}' object has no "
+                                 "attribute '{name}'".format(**locals()))
+
+
+
+# functor
+class Strip:
+    def __init__(self, characters):
+        self.characters = characters
+    def __call__(self, string):
+        return string.strip(self.characters)

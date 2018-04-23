@@ -71,3 +71,92 @@ while len(result) < 5:
     if abs(x - 0.5) < sys.float_info.epsilon:
         x = generator.send(1.0)
     result.append(x)
+
+
+
+
+def positive_result(function):
+    @functools.wraps(function)
+    def wrapper(*args, **kwargs):
+        result = function(*args, **kwargs)
+        assert result >= 0, function.__name__ + "() result isn't >= 0"
+        return result
+    #wrapper.__name__ = function.__name__
+    #wrapper.__doc__ = function.__doc__
+    return wrapper
+
+def bounded(minimum, maximum):
+    def decorator(function):
+        @functools.wraps(function)
+        def wrapper(*args, **kwargs):
+            result = function(*args, **kwargs)
+            if result < minimum:
+                return minimum
+            elif result > maximum:
+                return maximum
+            return result
+        return wrapper
+    return decorator
+
+
+
+if __debug__:
+    logger = logging.getLogger("Logger")
+    logger.setLevel(logging.DEBUG)
+    handler = logging.FileHandler(os.path.join(
+        tempfile.gettempdir(), "logged.log"))
+    logger.addHandler(handler)
+    def logged(function):
+        @functools.wraps(function)
+        def wrapper(*args, **kwargs):
+            log = "called: " + function.__name__ + "("
+            log += ", ".join(["{0!r}".format(a) for a in args] +
+                     ["{0!s}={1!r}".format(k, v) for k, v in kwargs.items()])
+            result = exception = None
+            try:
+                result = function(*args, **kwargs)
+                return result
+            except Exception as err:
+                exception = err
+            finally:
+                log += ((") > " + str(result)) if exception is None
+                else ") {0}: {1}".format(type(exception),
+                                     exception))
+                logger.debug(log)
+            if exception is not None:
+                raise exception
+        return wrapper
+else:
+    def logged(function):
+        return function
+
+
+
+def is_unicode_punctuation(s : str) -> bool:
+    for c in s:
+        if unicodedata.category(c)[0] != "P":
+            return False
+    return True
+
+
+
+def strictly_typed(function):
+    annotations = function.__annotations__
+    arg_spec = inspect.getfullargspec(function)
+    assert "return" in annotations, "missing type for return value"
+    for arg in arg_spec.args + arg_spec.kwonlyargs:
+        assert arg in annotations, ("missing type for parameter '" +
+                                    arg + "'")
+    @functools.wraps(function)
+    def wrapper(*args, **kwargs):
+        for name, arg in (list(zip(arg_spec.args, args)) +
+                          list(kwargs.items())):
+            assert isinstance(arg, annotations[name]), (
+                "expected argument '{0}' of {1} got {2}".format(
+                    name, annotations[name], type(arg)))
+        result = function(*args, **kwargs)
+        assert isinstance(result, annotations["return"]), (
+            "expected return of {0} got {1}".format(
+                annotations["return"], type(result)))
+        return result
+    return wrapper
