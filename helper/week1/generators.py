@@ -14,6 +14,9 @@
 # ция слева возвращает список, а функция справа возвращает ге-
 # нератор.
 # # Создает и возвращает список
+import sys
+
+
 def letter_range(a, z):
     result = []
     while ord(a) < ord(z):
@@ -37,3 +40,34 @@ list(letter_range("m", "v"))
 # нить преобразование: list(letter_range("m", "v")).
 # Функции-генераторы и методы-генераторы (а также выраже-
 # ния-генераторы) более полно рассматриваются в главе 8.
+
+
+def items_in_key_order(d):
+    for key in sorted(d):
+        yield key, d[key]
+# equivalent =>
+def items_in_key_order(d):
+    return ((key, d[key]) for key in sorted(d))
+
+
+# Выражение yield поочередно возвращает каждое значение вызываю
+# щей программе. Кроме того, если будет вызван метод send() генерато
+# ра, то переданное значение будет принято функциейгенератором в ка
+# честве результата выражения yield. Ниже показано, как можно ис
+# пользовать новую функциюгенератор:
+
+def quarters(next_quarter=0.0):
+    while True:
+        received = (yield next_quarter)
+        if received is None:
+            next_quarter += 0.25
+        else:
+            next_quarter = received
+
+result = []
+generator = quarters()
+while len(result) < 5:
+    x = next(generator)
+    if abs(x - 0.5) < sys.float_info.epsilon:
+        x = generator.send(1.0)
+    result.append(x)

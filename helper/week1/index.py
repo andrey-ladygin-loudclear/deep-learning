@@ -60,3 +60,55 @@ def add(x: int, y: int) -> int:
 #list comprehencions
 
 square_map = {number: number**2 for number in range(5) if number%2==0}
+
+
+
+action = 'a'
+
+if action == "a":
+    add_dvd(db)
+elif action == "e":
+    edit_dvd(db)
+elif action == "l":
+    list_dvds(db)
+elif action == "r":
+    remove_dvd(db)
+elif action == "i":
+    import_(db)
+elif action == "x":
+    export(db)
+elif action == "q":
+    quit(db)
+
+functions = dict(a=add_dvd, e=edit_dvd, l=list_dvds, r=remove_dvd, i=import_, x=export, q=quit)
+functions[action](db)
+
+call = {(".aix", "dom"): self.import_xml_dom,
+        (".aix", "etree"): self.import_xml_etree,
+        (".aix", "sax"): self.import_xml_sax,
+        (".ait", "manual"): self.import_text_manual,
+        (".ait", "regex"): self.import_text_regex,
+        (".aib", None): self.import_binary,
+        (".aip", None): self.import_pickle}
+result = call[extension, reader](filename)
+
+
+
+
+getattr(obj, name, val)
+hasattr(obj, name)
+setattr(obj, name, val)
+vars(obj) #Возвращает контекст объекта obj в виде словаря или локальный контекст, если аргумент obj не определен
+
+def get_function(module, function_name):
+    function = get_function.cache.get((module, function_name), None)
+    if function is None:
+        try:
+            function = getattr(module, function_name)
+            if not hasattr(function, "__call__"):
+                raise AttributeError()
+            get_function.cache[module, function_name] = function
+        except AttributeError:
+            function = None
+    return function
+get_function.cache = {}
