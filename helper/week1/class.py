@@ -94,11 +94,7 @@ class Const:
 # __setattr__(self, name, value) x.n = v Присваивает значение v атрибуту n объекта x
 
 
-
-
-
 class Image:
-
     def __init__(self, width, height, filename="", background="#FFFFFF"):
         self.filename = filename
         self.__background = background
@@ -110,10 +106,13 @@ class Image:
     def __getattr__(self, name):
         if name == "colors":
             return set(self.__colors)
+
         classname = self.__class__.__name__
+
         if name in frozenset({"background", "width", "height"}):
             return self.__dict__["_{classname}__{name}".format(
                 **locals())]
+
         raise AttributeError("'{classname}' object has no "
                                  "attribute '{name}'".format(**locals()))
 
@@ -123,5 +122,16 @@ class Image:
 class Strip:
     def __init__(self, characters):
         self.characters = characters
+
     def __call__(self, string):
         return string.strip(self.characters)
+
+class SortKey:
+    def __init__(self, *attribute_names):
+        self.attribute_names = attribute_names
+
+    def __call__(self, instance):
+        values = []
+        for attribute_name in self.attribute_names:
+            values.append(getattr(instance, attribute_name))
+        return values
