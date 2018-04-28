@@ -1,0 +1,15 @@
+from sprites.backgroundObject import backgroundObject
+from sprites.decorationObject import decorationObject
+from sprites.destroyableObject import destroyableObject
+
+
+class SpriteFactory:
+
+    @staticmethod
+    def getSpriteByName(name, position = (0,0)):
+        destroyableObjectsArr = ['0x17.jpg','0x18.jpg','1x0.jpg','1x1.jpg','1x2.jpg','1x3.jpg','1x4.jpg','1x5.jpg','1x6.jpg','1x7.jpg','1x8.jpg','1x9.jpg','1x10.jpg','1x11.jpg','1x12.jpg','1x13.jpg','1x14.jpg','2x14.jpg','2x15.jpg','2x16.jpg','2x17.jpg','2x18.jpg','3x0.jpg','3x1.jpg','3x2.jpg','3x3.jpg','3x4.jpg','3x5.jpg','3x6.jpg','3x7.jpg','3x8.jpg','3x9.jpg','3x10.jpg','3x11.jpg','3x12.jpg','4x12.jpg','4x13.jpg','4x14.jpg','4x15.jpg','4x16.jpg','4x17.jpg','4x18.jpg','5x0.jpg','5x1.jpg','5x2.jpg','5x3.jpg','5x4.jpg','5x5.jpg','5x6.jpg',]
+        decorationObjectsArr = ['1x15.jpg','1x16.jpg','1x17.jpg','1x18.jpg','2x0.jpg','2x1.jpg','2x2.jpg','2x3.jpg','2x4.jpg','2x5.jpg','2x6.jpg','2x7.jpg','2x8.jpg','2x9.jpg','2x10.jpg','2x11.jpg','2x12.jpg','3x13.jpg','3x14.jpg','3x15.jpg','3x16.jpg','3x17.jpg','3x18.jpg','4x0.jpg','4x1.jpg','4x2.jpg','4x3.jpg','4x4.jpg','4x5.jpg','4x6.jpg','4x7.jpg','4x8.jpg','4x9.jpg','4x10.jpg','4x11.jpg','5x7.jpg','5x7.jpg','5x8.jpg','5x9.jpg','5x10.jpg','5x11.jpg','5x12.jpg','5x13.jpg','5x14.jpg','5x15.jpg','5x16.jpg','5x17.jpg','5x18.jpg','6x0.jpg','6x1.jpg','6x2.jpg','6x3.jpg','6x4.jpg','6x5.jpg','6x6.jpg','6x7.jpg','6x8.jpg','6x9.jpg','6x10.jpg','6x11.jpg','6x13.jpg','6x14.jpg','6x15.jpg','6x16.jpg','6x17.jpg','6x18.jpg','7x0.jpg','7x1.jpg','7x2.jpg','7x3.jpg','7x4.jpg','7x5.jpg','7x6.jpg','7x7.jpg','7x8.jpg','7x9.jpg','7x10.jpg','7x11.jpg','7x12.jpg','7x13.jpg','7x14.jpg','7x15.jpg','7x16.jpg','7x17.jpg','7x18.jpg','8x0.jpg','8x1.jpg','8x2.jpg','8x3.jpg','8x4.jpg','8x5.jpg','8x6.jpg','8x7.jpg','8x8.jpg','8x9.jpg','8x10.jpg','8x11.jpg','8x12.jpg','8x13.jpg','8x15.jpg','8x16.jpg','8x17.jpg','8x18.jpg','9x0.jpg','9x1.jpg','9x2.jpg','9x3.jpg','9x4.jpg','9x5.jpg','9x6.jpg','9x7.jpg','9x8.jpg','11x1.jpg','11x2.jpg','11x3.jpg','11x7.jpg','11x10.jpg','11x11.jpg','11x14.jpg','11x16.jpg','11x17.jpg','11x18.jpg','12x0.jpg','12x1.jpg','12x4.jpg','12x5.jpg','12x6.jpg','12x7.jpg','12x2.jpg','12x3.jpg','12x4.jpg','12x5.jpg','15x15.jpg','15x16.jpg','15x17.jpg','15x18.jpg','16x0.jpg','16x1.jpg','16x2.jpg','16x3.jpg','16x4.jpg','16x5.jpg','16x6.jpg','16x7.jpg','16x8.jpg','16x9.jpg','16x10.jpg','16x11.jpg','16x12.jpg','16x13.jpg','16x14.jpg','16x15.jpg','16x16.jpg','16x17.jpg','16x18.jpg','17x0.jpg','17x1.jpg','17x2.jpg','17x3.jpg','17x4.jpg','17x5.jpg','17x6.jpg','17x7.jpg','17x8.jpg','17x9.jpg','17x10.jpg',]
+
+        if name.replace('assets/', '') in destroyableObjectsArr: return destroyableObject(name, position)
+        if name.replace('assets/', '') in decorationObjectsArr: return decorationObject(name, position)
+        return backgroundObject(name, position)
