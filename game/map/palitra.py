@@ -17,10 +17,10 @@ class Palitra(layer.Layer):
 
     def load(self):
         for folder in ['background', 'objects', 'undestroyable_objects', 'unmovable_background']:
-            path = join('assets', folder)
+            path = 'assets/' + folder
             imgs = sorted(listdir(path))
             for src in imgs:
-                self.addImg(join(path, src), folder)
+                self.addImg("{}/{}".format(path, src), folder)
 
     def updatePosition(self, width, height, viewPoint):
         x, y = viewPoint
