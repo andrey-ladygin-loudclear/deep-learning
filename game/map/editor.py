@@ -4,7 +4,7 @@ from cocos.layer import MultiplexLayer
 from pyglet.window import key
 from scene import Scene
 
-from game.map.menu import MainMenu, OptionMenu, ScoreMenu
+from game.map.menu import MainMenu, MapOptionMenu, ScoreMenu
 
 global keyboard, scroller
 #https://github.com/los-cocos/cocos/blob/master/samples/demo_grid_effects.py
@@ -17,9 +17,12 @@ cocos.director.director.window.push_handlers(keyboardHandler)
 sceneHandler = Scene(keyboardHandler, scrollerHandler)
 scrollerHandler.add(sceneHandler)
 
-menulayer = MultiplexLayer(MainMenu(sceneHandler), OptionMenu(), ScoreMenu())
+menulayer = MultiplexLayer(MainMenu(), MapOptionMenu(sceneHandler.map), ScoreMenu())
+sceneHandler.setMenuLayer(menulayer)
 
 scene = cocos.scene.Scene(sceneHandler, scrollerHandler, menulayer)
+scene.transform_anchor = (0, 0)
+sceneHandler.transform_anchor = (0, 0)
 scene.schedule(sceneHandler.checkButtons)
 
 cocos.director.director.on_resize = sceneHandler.resize

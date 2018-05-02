@@ -11,6 +11,8 @@ from copy import copy
 
 from cocos.sprite import Sprite
 
+from game.map.utils import generate_image
+
 blockSize = 32
 
 
@@ -24,7 +26,11 @@ class Map(layer.Layer):
         x = x // blockSize * blockSize
         y = y // blockSize * blockSize
 
-        spriteObj = copy(spriteBlock)
+        if isinstance(spriteBlock, str):
+            spriteObj = Sprite(spriteBlock)
+        else:
+            spriteObj = copy(spriteBlock)
+
         spriteObj.position = (x, y)
         spriteObj.cshape = cm.AARectShape(spriteObj.position, spriteObj.width//2, spriteObj.height//2)
 
@@ -44,28 +50,26 @@ class Map(layer.Layer):
             self.remove(obj)
 
     def generate_new_background(self):
-        block_size = 32
-
-        images = ['assets/background/177.jpg', 'assets/background/178.jpg', 'assets/background/179.jpg',
-                  'assets/background/180.jpg', 'assets/background/181.jpg']
-
-        x_blockCount = 140
-        y_blockCount = 140
-
-        out = Image.new('RGBA', (block_size*x_blockCount, block_size*y_blockCount))
-        img = [Image.open(src) for src in images]
-
-        for i in range(x_blockCount):
-            for j in range(y_blockCount):
-                x = i * 32
-                y = j * 32
-                out.paste(random.choice(img), (x, y))
-
-        out.save("assets/image.png")
-        out.show()
+        generate_image()
 
     def load_background(self):
+        block_size = 32
         sprite = Sprite("assets/image.png")
+        #sprite.scale = 0.1
+        sprite.position = (sprite.width/2, sprite.height/2)
+        self.add(sprite)
+        w, h = sprite.width, sprite.height
+        top_wall = ['assets/objects/226.jpg','assets/objects/227.jpg']
+        side_wall = ['assets/objects/220.jpg','assets/objects/221.jpg']
+
+        for i in range(w//block_size):
+            self.addBrick(i*32, 0, random.choice(top_wall))
+            self.addBrick(i*32, h-block_size/2, random.choice(top_wall))
+
+        for i in range(h//block_size):
+            self.addBrick(0, i*32, random.choice(side_wall))
+            self.addBrick(w-block_size/2, i*32, random.choice(side_wall))
+
 
 class Point():
     def __init__(self, x, y):

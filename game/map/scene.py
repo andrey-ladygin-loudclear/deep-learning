@@ -81,14 +81,22 @@ class Scene(ScrollableLayer):
         # self.palitraObject = []
         # self.add(self.palitra, z=2)
 
+    def setMenuLayer(self, menu_layer):
+        self.menu_layer = menu_layer
+        self.menu_layer.visible = False
 
     def checkButtons(self, dt):
         x_direction = self.keyboard[key.LEFT] - self.keyboard[key.RIGHT]
         y_direction = self.keyboard[key.DOWN] - self.keyboard[key.UP]
+        print(self.keyboard[key.DOWN], self.keyboard[key.UP])
         x, y = self.position
 
         if self.keyboard[key.Q]:
             self.palitra.visible = 1 - self.palitra.visible
+            sleep(0.2)
+
+        if self.keyboard[key.E]:
+            self.menu_layer.visible = 1 - self.menu_layer.visible
             sleep(0.2)
 
         if x_direction:
