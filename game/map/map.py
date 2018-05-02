@@ -56,6 +56,7 @@ class Map(layer.Layer):
         block_size = 32
         sprite = Sprite("assets/image.png")
         #sprite.scale = 0.1
+        #self.image_anchor = (self.image.width / 2, self.image.height / 2 + 20)
         sprite.position = (sprite.width/2, sprite.height/2)
         self.add(sprite)
         w, h = sprite.width, sprite.height
